@@ -3,9 +3,9 @@ RESTful API generator using NodeJS, Express and Mongoose.
 
 ## CHANGLE LOG: 
 ### Version 0.0.1
- - Auto generator api with simple config json *(demo)*.
+ - Auto generator api with simple `config.json` *(demo)*.
  - Demo api in Demo folder.
-
+ - 
 
 ## How to build project:
 
@@ -18,6 +18,7 @@ $ cd api-generator
 ```
 Follow instructions to install nodejs and npm.
 ```
+### Edit `config.json` file
 ### Run project
 ```
 npm start
@@ -25,7 +26,7 @@ npm start
 ### Try api demo:
 
 ```
-cd Demo
+cd *appName*.
 npm install
 npm start
 ```

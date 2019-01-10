@@ -1,15 +1,8 @@
-const os = require('os');
-const fs = require('fs');
-const templates = require('./templates');
 const play = require('./play');
+const fs = require('fs');
 
 async function playCode() {
-    let config = {
-        "appName":"Demo",
-        "mongoURL":'mongodb://Test123:Test123@ds145299.mlab.com:45299/dbtest123',
-        "posts":[ "title", "author"],
-        "comments":[ "body", "postId"],
-    }
+    var config = JSON.parse(fs.readFileSync('config.json', 'utf8'));
     var configKeys = Object.keys(config);
 
     play.createAppFolder(config.appName);

@@ -1,5 +1,4 @@
 const fs = require('fs');
-const os = require('os');
 const template = require('./templates');
 const DIR_NAME = process.cwd() + '/';
 
