@@ -2,6 +2,10 @@
 const mongoose = require('mongoose');
 
 const postsSchema = new mongoose.Schema({
+ id: {
+    type: Number,
+    required: true,
+  },
  title: {
     type: String,
     required: true,
@@ -10,7 +14,7 @@ const postsSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-createdAt: {
+ createdAt: {
     type: Date,
     default: Date.now
   }

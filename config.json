@@ -1,6 +1,10 @@
 {
     "appName":"Demo",
     "mongoURL": "mongodb://Test123:Test123@ds145299.mlab.com:45299/dbtest123",
-    "posts":[ "title", "author"],
-    "comments":[ "body", "postId"]
+    "posts":[
+         { "id": "Number", "title": "String", "author": "String" }
+        ],
+    "comments":[ 
+        {"body": "String", "postId": "Number" }
+    ]
 }

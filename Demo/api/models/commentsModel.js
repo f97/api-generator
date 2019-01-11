@@ -7,10 +7,10 @@ const commentsSchema = new mongoose.Schema({
     required: true,
   },
  postId: {
-    type: String,
+    type: Number,
     required: true,
   },
-createdAt: {
+ createdAt: {
     type: Date,
     default: Date.now
   }

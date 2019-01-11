@@ -76,8 +76,10 @@ const createRoutes = (appName, models) => {
 const createModel = (appName, models, config) => {
   try{
     for(var i=2; i<models.length;i++){
+      attributes = Object.keys(config[models[i]][0]);
+      types = Object.values(config[models[i]][0]);
       fs.writeFileSync(`${DIR_NAME+appName+'/'}api/models/${models[i]}Model.js`,
-        template.modelsTemplate(models[i],config[models[i]]));
+        template.modelsTemplate(models[i], attributes, types));
       console.log(`Writing ${models[i]}Model.js`);
     }
   }catch(err){

@@ -236,12 +236,12 @@ module.exports = router;
   );
 }
 
-const modelsTemplate = (model, attributes) => {
+const modelsTemplate = (model, attributes, types) => {
   let schemaAttributes = '';
   for (var i=0;i<attributes.length;i++){
     schemaAttributes += 
 ` ${attributes[i]}: {
-    type: String,
+    type: ${types[i]},
     required: true,
   },
 `
@@ -251,7 +251,7 @@ const modelsTemplate = (model, attributes) => {
 const mongoose = require('mongoose');
 
 const ${model}Schema = new mongoose.Schema({
-${schemaAttributes}createdAt: {
+${schemaAttributes} createdAt: {
     type: Date,
     default: Date.now
   }

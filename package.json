@@ -1,6 +1,6 @@
 {
   "name": "api-generator",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "RESTful API generator using NodeJS, Express and Mongoose",
   "main": "app.js",
   "scripts": {
