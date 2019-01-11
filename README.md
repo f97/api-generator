@@ -12,7 +12,10 @@ RESTful API generator using NodeJS, Express and Mongoose.
 
  - `config.json` update type model.
  - `config.json` add port.
- - Add document API.
+
+### Version 0.0.3
+
+ - Auto generate document API. *path /api-docs*
 
 ## How to build project:
 
@@ -59,6 +62,7 @@ npm install
 npm start
 ```
 
-Go to the browser with url : [localhost:2308](http://localhost:2308)
+Go to the browser with url: [localhost:2308](http://localhost:2308)
+Documents: [localhost:2308/api-docs](http://localhost:2308/api-docs)
 
 Have fun

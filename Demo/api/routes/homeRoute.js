@@ -12,6 +12,7 @@ router.use(function(req, res, next) {
 
 /**
  * @route GET /
+ * @group Home
  * @returns {string} get api version
  */
 

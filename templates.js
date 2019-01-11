@@ -205,6 +205,7 @@ router.use(function(req, res, next) {
 
 /**
  * @route GET /
+ * @group Home
  * @returns {string} get api version
  */
 
@@ -244,6 +245,7 @@ ${modelDefinitions} */
 
 /**
  * @route GET /${model}
+ * @group ${capitalizeFirst(model)}
  * @returns {Array.<${capitalizeFirst(model)}>} get all ${model}
  */
 
@@ -257,12 +259,26 @@ router.get('/', (req, res, next) => {
   });
 });
 
+/**
+ * @route GET /${model}/{${model}Id}
+ * @group ${capitalizeFirst(model)}
+ * @param {string} ${model}.path.required 
+ * @returns {Array.<${capitalizeFirst(model)}>} get all ${model}
+ */
+
 // GET '/${model}/:${model}Id' Route to get a particular ${model}
 router.get('/:${model}Id', (req, res, next) => {
   ${model}Controller.get${capitalizeFirst(model)}(req.params.${model}Id, (err, status, data) => {
     res.status(status).json({err: err, data: data});
   });
 });
+
+/**
+ * @route POST /${model}
+ * @group ${capitalizeFirst(model)}
+ * @param {${capitalizeFirst(model)}.model} ${model}.body.required
+ * @returns {Array.<${capitalizeFirst(model)}>} post a  ${model}
+ */
 
 // POST '/${model}' Route to add new ${model}
 router.post('/', (req, res, next) => {
@@ -271,12 +287,27 @@ router.post('/', (req, res, next) => {
   });
 });
 
+/**
+ * @route PUT /${model}/{${model}Id}
+ * @group ${capitalizeFirst(model)}
+ * @param {string} ${model}Id.path.required 
+ * @param {${capitalizeFirst(model)}.model} ${model}.body.required
+ * @returns {Array.<${capitalizeFirst(model)}>} get one ${model}
+ */
+
 // PUT '/${model}/:${model}Id' Route to modify ${model}
 router.put('/:${model}Id', (req, res, next) => {
   ${model}Controller.modify${capitalizeFirst(model)}(req.params.${model}Id, req.body, (err, status, data) => {
     res.status(status).json({err: err, data: data});
   });
 });
+
+/**
+ * @route DELETE /${model}/{${model}Id}
+ * @group ${capitalizeFirst(model)}
+ * @param {string} ${model}Id.path.required 
+ * @returns {Array.<${capitalizeFirst(model)}>} get one {${model}
+ */
 
 // DELETE '/${model}/:${model}Id' Route to delete ${model}
 router.delete('/:${model}Id', (req, res, next) => {

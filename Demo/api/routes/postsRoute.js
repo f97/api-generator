@@ -20,6 +20,7 @@ router.use(function(req, res, next) {
 
 /**
  * @route GET /posts
+ * @group Posts
  * @returns {Array.<Posts>} get all posts
  */
 
@@ -33,12 +34,26 @@ router.get('/', (req, res, next) => {
   });
 });
 
+/**
+ * @route GET /posts/{postsId}
+ * @group Posts
+ * @param {string} posts.path.required 
+ * @returns {Array.<Posts>} get all posts
+ */
+
 // GET '/posts/:postsId' Route to get a particular posts
 router.get('/:postsId', (req, res, next) => {
   postsController.getPosts(req.params.postsId, (err, status, data) => {
     res.status(status).json({err: err, data: data});
   });
 });
+
+/**
+ * @route POST /posts
+ * @group Posts
+ * @param {Posts.model} posts.body.required
+ * @returns {Array.<Posts>} post a  posts
+ */
 
 // POST '/posts' Route to add new posts
 router.post('/', (req, res, next) => {
@@ -47,12 +62,27 @@ router.post('/', (req, res, next) => {
   });
 });
 
+/**
+ * @route PUT /posts/{postsId}
+ * @group Posts
+ * @param {string} postsId.path.required 
+ * @param {Posts.model} posts.body.required
+ * @returns {Array.<Posts>} get one posts
+ */
+
 // PUT '/posts/:postsId' Route to modify posts
 router.put('/:postsId', (req, res, next) => {
   postsController.modifyPosts(req.params.postsId, req.body, (err, status, data) => {
     res.status(status).json({err: err, data: data});
   });
 });
+
+/**
+ * @route DELETE /posts/{postsId}
+ * @group Posts
+ * @param {string} postsId.path.required 
+ * @returns {Array.<Posts>} get one {posts
+ */
 
 // DELETE '/posts/:postsId' Route to delete posts
 router.delete('/:postsId', (req, res, next) => {

@@ -19,6 +19,7 @@ router.use(function(req, res, next) {
 
 /**
  * @route GET /comments
+ * @group Comments
  * @returns {Array.<Comments>} get all comments
  */
 
@@ -32,12 +33,26 @@ router.get('/', (req, res, next) => {
   });
 });
 
+/**
+ * @route GET /comments/{commentsId}
+ * @group Comments
+ * @param {string} comments.path.required 
+ * @returns {Array.<Comments>} get all comments
+ */
+
 // GET '/comments/:commentsId' Route to get a particular comments
 router.get('/:commentsId', (req, res, next) => {
   commentsController.getComments(req.params.commentsId, (err, status, data) => {
     res.status(status).json({err: err, data: data});
   });
 });
+
+/**
+ * @route POST /comments
+ * @group Comments
+ * @param {Comments.model} comments.body.required
+ * @returns {Array.<Comments>} post a  comments
+ */
 
 // POST '/comments' Route to add new comments
 router.post('/', (req, res, next) => {
@@ -46,12 +61,27 @@ router.post('/', (req, res, next) => {
   });
 });
 
+/**
+ * @route PUT /comments/{commentsId}
+ * @group Comments
+ * @param {string} commentsId.path.required 
+ * @param {Comments.model} comments.body.required
+ * @returns {Array.<Comments>} get one comments
+ */
+
 // PUT '/comments/:commentsId' Route to modify comments
 router.put('/:commentsId', (req, res, next) => {
   commentsController.modifyComments(req.params.commentsId, req.body, (err, status, data) => {
     res.status(status).json({err: err, data: data});
   });
 });
+
+/**
+ * @route DELETE /comments/{commentsId}
+ * @group Comments
+ * @param {string} commentsId.path.required 
+ * @returns {Array.<Comments>} get one {comments
+ */
 
 // DELETE '/comments/:commentsId' Route to delete comments
 router.delete('/:commentsId', (req, res, next) => {
