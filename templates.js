@@ -22,7 +22,7 @@ const packageTemplate = (appName) => {
   );
 }
 
-const serverjsTemplate = (mongoURL,models) => {
+const serverjsTemplate = (mongoURL,models,port) => {
   let rs = getRoutesDependencies(models);
   let useRoutes = getUseRoutes(models);
   return (
@@ -39,7 +39,7 @@ ${rs}
 dotenv.load();
 
 // Define PORT
-const PORT = process.env.PORT || 2308;
+const PORT = process.env.PORT || ${port};
 
 // Connect to Database
 mongoose.connect('${mongoURL}', { useNewUrlParser: true });
@@ -267,7 +267,7 @@ module.exports = {
 //Lặp để lấy về tất cả routes dependencies
 const getRoutesDependencies = (models) => {
   let routes = '';
-  for(var i=2;i<models.length;i++)
+  for(var i=3;i<models.length;i++)
     routes += `const ${models[i]}Route = require('./api/routes/${models[i]}Route');
 `;
   return routes;
@@ -278,7 +278,7 @@ const getRoutesDependencies = (models) => {
 const getUseRoutes = models => {
   let use = '';
 
-  for(var i=2;i<models.length;i++)
+  for(var i=3;i<models.length;i++)
     use += `app.use('/${models[i]}', ${models[i]}Route);
 `;
   return use;

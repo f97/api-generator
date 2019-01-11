@@ -9,7 +9,9 @@ RESTful API generator using NodeJS, Express and Mongoose.
  - Demo api in Demo folder.
 
 ### Version 0.0.2
+
  - `config.json` update type model.
+ - `config.json` add port.
 
 ## How to build project:
 
@@ -32,11 +34,12 @@ Example `config.json`:
 {
     "appName":"Demo",
     "mongoURL": "mongodb://Test123:Test123@ds145299.mlab.com:45299/dbtest123",
-    "posts":[
-         { "id": "Number", "title": "String", "author": "String" }
-        ],
-    "comments":[ 
-        {"body": "String", "postId": "Number" }
+    "port": 2308,
+    "posts": [
+        {"id": "Number", "title": "String", "author": "String"}
+    ],
+    "comments": [ 
+        {"body": "String", "postId": "Number"}
     ]
 }
 ```
@@ -56,7 +59,5 @@ npm start
 ```
 
 Go to the browser with url : [localhost:2308](http://localhost:2308)
-
-Test API with document.. ;)) 
 
 Have fun

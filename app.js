@@ -7,7 +7,7 @@ async function playCode() {
 
     play.createAppFolder(config.appName);
     play.createPackageJson(config.appName);
-    play.createServerjs(config.appName,config.mongoURL,configKeys);
+    play.createServerjs(config.appName,config.mongoURL,configKeys, config.port);
     play.createApiFolder(config.appName);
     play.createControllers(config.appName,configKeys);
     play.createRoutes(config.appName,configKeys);
