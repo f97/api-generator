@@ -10,7 +10,7 @@ async function playCode() {
     play.createServerjs(config.appName,config.mongoURL,configKeys, config.port);
     play.createApiFolder(config.appName);
     play.createControllers(config.appName,configKeys);
-    play.createRoutes(config.appName,configKeys);
+    play.createRoutes(config.appName,configKeys, config);
     play.createModel(config.appName,configKeys,config);
     console.log('Done!!!');
     process.exit(0);

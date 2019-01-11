@@ -1,17 +1,48 @@
 // Dependencies
 const express = require('express');
 const app = express();
+const expressSwagger = require('express-swagger-generator')(app);
 const mongoose = require('mongoose');
 const logger = require('morgan');
 const bodyParser = require('body-parser');
 const dotenv = require('dotenv');
 const homeRoute = require('./api/routes/homeRoute');
+
 const postsRoute = require('./api/routes/postsRoute');
 const commentsRoute = require('./api/routes/commentsRoute');
 
 // Load dotenv variables
 dotenv.load();
 
+//express swagger documents
+let options = {
+  swaggerDefinition: {
+      info: {
+          description: 'Documents api',
+          title: 'Documents',
+          version: '0.0.2',
+      },
+      host: 'localhost:2308',
+      basePath: '',
+      produces: [
+          "application/json",
+          "application/xml"
+      ],
+      schemes: ['http', 'https'],
+  securityDefinitions: {
+          JWT: {
+              type: 'apiKey',
+              in: 'header',
+              name: 'Authorization',
+              description: "",
+          }
+      }
+  },
+  basedir: __dirname, //app absolute path
+  files: ['./api/routes/*.js'] //Path to the API handle folder
+};
+
+expressSwagger(options)
 // Define PORT
 const PORT = process.env.PORT || 2308;
 

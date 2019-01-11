@@ -12,6 +12,7 @@ RESTful API generator using NodeJS, Express and Mongoose.
 
  - `config.json` update type model.
  - `config.json` add port.
+ - Add document API.
 
 ## How to build project:
 

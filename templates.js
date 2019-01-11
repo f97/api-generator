@@ -1,3 +1,5 @@
+const pjson = require('./package.json');
+
 const packageTemplate = (appName) => {
   return (
 `{
@@ -16,7 +18,8 @@ const packageTemplate = (appName) => {
     "dotenv": "*",
     "express": "*",
     "mongoose": "*",
-    "morgan": "*"
+    "morgan": "*",
+    "express-swagger-generator": "*"
   }
 }`
   );
@@ -29,15 +32,46 @@ const serverjsTemplate = (mongoURL,models,port) => {
 `// Dependencies
 const express = require('express');
 const app = express();
+const expressSwagger = require('express-swagger-generator')(app);
 const mongoose = require('mongoose');
 const logger = require('morgan');
 const bodyParser = require('body-parser');
 const dotenv = require('dotenv');
 const homeRoute = require('./api/routes/homeRoute');
+
 ${rs}
 // Load dotenv variables
 dotenv.load();
 
+//express swagger documents
+let options = {
+  swaggerDefinition: {
+      info: {
+          description: 'Documents api',
+          title: 'Documents',
+          version: '${pjson.version}',
+      },
+      host: 'localhost:${port}',
+      basePath: '',
+      produces: [
+          "application/json",
+          "application/xml"
+      ],
+      schemes: ['http', 'https'],
+  securityDefinitions: {
+          JWT: {
+              type: 'apiKey',
+              in: 'header',
+              name: 'Authorization',
+              description: "",
+          }
+      }
+  },
+  basedir: __dirname, //app absolute path
+  files: ['./api/routes/*.js'] //Path to the API handle folder
+};
+
+expressSwagger(options)
 // Define PORT
 const PORT = process.env.PORT || ${port};
 
@@ -169,8 +203,13 @@ router.use(function(req, res, next) {
   next();
 });
 
+/**
+ * @route GET /
+ * @returns {string} get api version
+ */
+
 router.get('/', (req, res, next) => {
-  res.send('API running version 0.0.1');
+  res.send('API running version ${pjson.version}');
 });
 
 module.exports = router;
@@ -178,7 +217,14 @@ module.exports = router;
   );
 }
 
-const routesTemplate = model => {
+const routesTemplate = (model, attributes, types) => {
+  let modelDefinitions = ` * @typedef ${capitalizeFirst(model)}
+`;
+  for (var i=0;i<attributes.length;i++){
+    modelDefinitions += 
+` * @property {${swaggerType(types[i])}} ${attributes[i]}.required
+`
+};  
   return (
     `// Dependencies
 const express = require('express');
@@ -192,6 +238,14 @@ router.use(function(req, res, next) {
     "Origin, X-Requested-With, Content-Type, Accept, X-Access-Token, X-Key");
   next();
 });
+
+/**
+${modelDefinitions} */
+
+/**
+ * @route GET /${model}
+ * @returns {Array.<${capitalizeFirst(model)}>} get all ${model}
+ */
 
 // GET '/${model}' Route to get all ${model}
 router.get('/', (req, res, next) => {
@@ -288,6 +342,12 @@ const getUseRoutes = models => {
 //Viết hoa chữ cái đầu tiên
 const capitalizeFirst = (word) => {
   return word[0].toUpperCase()+word.substr(1, word.length);
+}
+
+//Chuyển kiểu dữ liệu mongoose sang swagger
+const swaggerType = (type) => {
+  if(type == 'String') return 'string';
+  if(type == 'Number') return 'integer';
 }
 
 module.exports = {

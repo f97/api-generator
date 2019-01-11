@@ -11,6 +11,17 @@ router.use(function(req, res, next) {
   next();
 });
 
+/**
+ * @typedef Comments
+ * @property {string} body.required
+ * @property {integer} postId.required
+ */
+
+/**
+ * @route GET /comments
+ * @returns {Array.<Comments>} get all comments
+ */
+
 // GET '/comments' Route to get all comments
 router.get('/', (req, res, next) => {
   commentsController.getAllComments((err, success) => {

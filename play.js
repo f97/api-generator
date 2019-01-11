@@ -58,14 +58,16 @@ const createControllers = (appName, models) => {
   }
 }
 
-const createRoutes = (appName, models) => {
+const createRoutes = (appName, models,config) => {
   try{
     fs.writeFileSync(`${DIR_NAME}${appName}/api/routes/homeRoute.js`,
         template.homeRouteTemplate());
     console.log(`Writing homeRoute.js`);
     for(var i=3; i<models.length; i++){
+      attributes = Object.keys(config[models[i]][0]);
+      types = Object.values(config[models[i]][0]);
       fs.writeFileSync(`${DIR_NAME+appName+'/'}api/routes/${models[i]}Route.js`,
-        template.routesTemplate(models[i]));
+        template.routesTemplate(models[i], attributes, types));
       console.log(`Writing ${models[i]}Route.js`);
     }
   }catch(err){

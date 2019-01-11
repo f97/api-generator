@@ -11,6 +11,18 @@ router.use(function(req, res, next) {
   next();
 });
 
+/**
+ * @typedef Posts
+ * @property {integer} id.required
+ * @property {string} title.required
+ * @property {string} author.required
+ */
+
+/**
+ * @route GET /posts
+ * @returns {Array.<Posts>} get all posts
+ */
+
 // GET '/posts' Route to get all posts
 router.get('/', (req, res, next) => {
   postsController.getAllPosts((err, success) => {

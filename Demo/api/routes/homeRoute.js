@@ -10,8 +10,13 @@ router.use(function(req, res, next) {
   next();
 });
 
+/**
+ * @route GET /
+ * @returns {string} get api version
+ */
+
 router.get('/', (req, res, next) => {
-  res.send('API running version 0.0.1');
+  res.send('API running version 0.0.2');
 });
 
 module.exports = router;
