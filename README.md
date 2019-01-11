@@ -1,4 +1,4 @@
-# api-generator
+# Api Generator
 RESTful API generator using NodeJS, Express and Mongoose.
 
 ## CHANGLE LOG: 
@@ -14,10 +14,12 @@ RESTful API generator using NodeJS, Express and Mongoose.
 ## How to build project:
 
 ### Clone the repo
-```
+
+```bash
 $ git clone https://github.com/f97/api-generator.git
 $ cd api-generator
 ```
+
 ### Install nodejs
 ```
 Follow instructions to install nodejs and npm.
@@ -40,13 +42,15 @@ Example `config.json`:
 ```
 
 ### Run project
-```
+
+```bash
 npm start
 ```
+
 ### Try api demo:
 
-```
-cd *appName*.
+```bash
+cd Demo #appName
 npm install
 npm start
 ```
