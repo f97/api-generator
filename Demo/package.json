@@ -10,11 +10,14 @@
   "author": "node-init",
   "license": "ISC",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "body-parser": "*",
+    "connect-mongo": "^2.0.3",
     "dotenv": "*",
     "express": "*",
+    "express-session": "^1.15.6",
+    "express-swagger-generator": "*",
     "mongoose": "*",
-    "morgan": "*",
-    "express-swagger-generator": "*"
+    "morgan": "*"
   }
 }
