@@ -17,6 +17,11 @@ RESTful API generator using NodeJS, Express and Mongoose.
 
  - Auto generate document API. *path /api-docs*
 
+### Version 0.0.4
+
+ - Add authentication with user  `{"email": "String", "username": "String", "password": "String", "passwordConf": "String"}`
+
+
 ## How to build project:
 
 ### Clone the repo
@@ -39,6 +44,7 @@ Example `config.json`:
     "appName":"Demo",
     "mongoURL": "mongodb://Test123:Test123@ds145299.mlab.com:45299/dbtest123",
     "port": 2308,
+    "authenticate": true,
     "posts": [
         {"id": "Number", "title": "String", "author": "String"}
     ],

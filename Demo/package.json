@@ -1,7 +1,7 @@
 {
   "name": "Demo",
-  "version": "1.0.0",
-  "description": "Demo",
+  "version": "0.0.2",
+  "description": "Demo description",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
@@ -10,12 +10,12 @@
   "author": "node-init",
   "license": "ISC",
   "dependencies": {
-    "bcryptjs": "^2.4.3",
+    "bcryptjs": "*",
     "body-parser": "*",
-    "connect-mongo": "^2.0.3",
+    "connect-mongo": "*",
     "dotenv": "*",
     "express": "*",
-    "express-session": "^1.15.6",
+    "express-session": "*",
     "express-swagger-generator": "*",
     "mongoose": "*",
     "morgan": "*"

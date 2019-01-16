@@ -21,10 +21,10 @@ const createPackageJson = (appName) => {
   }
 }
 
-const createServerjs = (appName, mongoURL, models, port) => {
+const createServerjs = (appName, mongoURL, models, port,authenticate) => {
   try{
     fs.writeFileSync(DIR_NAME+appName+'/server.js', 
-      template.serverjsTemplate(mongoURL, models, port));
+      template.serverjsTemplate(mongoURL, models, port,authenticate));
     console.log('Writing server.js');
   }catch(err){
     throw new Error(err);
@@ -48,7 +48,7 @@ const createApiFolder= (appName) => {
 
 const createControllers = (appName, models) => {
   try{
-    for(var i=3; i<models.length;i++){
+    for(var i=4; i<models.length;i++){
       fs.writeFileSync(`${DIR_NAME+appName+'/'}api/controllers/${models[i]}Controller.js`,
         template.controllerTemplate(models[i]));
       console.log(`Writing ${models[i]}Controller.js`);
@@ -63,7 +63,7 @@ const createRoutes = (appName, models,config) => {
     fs.writeFileSync(`${DIR_NAME}${appName}/api/routes/homeRoute.js`,
         template.homeRouteTemplate());
     console.log(`Writing homeRoute.js`);
-    for(var i=3; i<models.length; i++){
+    for(var i=4; i<models.length; i++){
       attributes = Object.keys(config[models[i]][0]);
       types = Object.values(config[models[i]][0]);
       fs.writeFileSync(`${DIR_NAME+appName+'/'}api/routes/${models[i]}Route.js`,
@@ -77,13 +77,26 @@ const createRoutes = (appName, models,config) => {
 
 const createModel = (appName, models, config) => {
   try{
-    for(var i=3; i<models.length; i++){
+    for(var i=4; i<models.length; i++){
       attributes = Object.keys(config[models[i]][0]);
       types = Object.values(config[models[i]][0]);
       fs.writeFileSync(`${DIR_NAME+appName+'/'}api/models/${models[i]}Model.js`,
         template.modelsTemplate(models[i], attributes, types));
       console.log(`Writing ${models[i]}Model.js`);
     }
+  }catch(err){
+    throw new Error(err);
+  }
+}
+
+const createAuthentication = (appName) => {
+  try{
+    fs.writeFileSync(`${DIR_NAME}${appName}/api/routes/userRoute.js`,
+        template.userRouteTemplate());
+    console.log(`Writing homeRoute.js`);
+    fs.writeFileSync(`${DIR_NAME}${appName}/api/models/userModel.js`,
+      template.userModelTemplate());
+    console.log(`Writing homeRoute.js`);
   }catch(err){
     throw new Error(err);
   }
@@ -96,5 +109,6 @@ module.exports = {
   createApiFolder,
   createControllers,
   createRoutes,
-  createModel
+  createModel,
+  createAuthentication
 }

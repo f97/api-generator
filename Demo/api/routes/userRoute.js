@@ -1,10 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const User = require('../models/userModel')
-// GET route for reading data
-router.get('/', function (req, res, next) {
-    res.send('USER running...');
-});
 
 //POST route for updating data
 router.post('/', function (req, res, next) {
@@ -33,7 +29,7 @@ router.post('/', function (req, res, next) {
                 return next(error);
             } else {
                 req.session.userId = user._id;
-                return res.redirect('/user/profile');
+                return res.redirect('/user');
             }
         });
 
@@ -45,7 +41,7 @@ router.post('/', function (req, res, next) {
                 return next(err);
             } else {
                 req.session.userId = user._id;
-                return res.redirect('/user/profile');
+                return res.redirect('/user');
             }
         });
     } else {
@@ -56,18 +52,19 @@ router.post('/', function (req, res, next) {
 })
 
 // GET route after registering
-router.get('/profile', function (req, res, next) {
+router.get('/', function (req, res, next) {
     User.findById(req.session.userId)
         .exec(function (error, user) {
             if (error) {
                 return next(error);
             } else {
                 if (user === null) {
-                    var err = new Error('Not authorized! Go back!');
+                    // let err = new Error('Not authorized! Go back!');
+                    let err = 'Not authorized!';
                     err.status = 400;
                     return next(err);
                 } else {
-                    return res.send('<h1>Name: </h1>' + user.username + '<h2>Mail: </h2>' + user.email + '<br><a type="button" href="/user/logout">Logout</a>')
+                    res.status(200).json({err: null, data: user});
                 }
             }
         });

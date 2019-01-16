@@ -7,42 +7,42 @@ const logger = require('morgan');
 const bodyParser = require('body-parser');
 const dotenv = require('dotenv');
 const homeRoute = require('./api/routes/homeRoute');
-const session = require('express-session');
-const MongoStore = require('connect-mongo')(session);
 
 const postsRoute = require('./api/routes/postsRoute');
 const commentsRoute = require('./api/routes/commentsRoute');
 const userRoute = require('./api/routes/userRoute');
+const session = require('express-session');
+const MongoStore = require('connect-mongo')(session);
 
 // Load dotenv variables
 dotenv.load();
 
 //express swagger documents
 let options = {
-    swaggerDefinition: {
-        info: {
-            description: 'Documents api',
-            title: 'Documents',
-            version: '0.0.2',
-        },
-        host: 'localhost:2308',
-        basePath: '',
-        produces: [
-            "application/json",
-            "application/xml"
-        ],
-        schemes: ['http', 'https'],
-        securityDefinitions: {
-            JWT: {
-                type: 'apiKey',
-                in: 'header',
-                name: 'Authorization',
-                description: "",
-            }
-        }
-    },
-    basedir: __dirname, //app absolute path
-    files: ['./api/routes/*.js'] //Path to the API handle folder
+  swaggerDefinition: {
+      info: {
+          description: 'Documents api',
+          title: 'Documents',
+          version: '0.0.2',
+      },
+      host: 'localhost:2308',
+      basePath: '',
+      produces: [
+          "application/json",
+          "application/xml"
+      ],
+      schemes: ['http', 'https'],
+  securityDefinitions: {
+          JWT: {
+              type: 'apiKey',
+              in: 'header',
+              name: 'Authorization',
+              description: "",
+          }
+      }
+  },
+  basedir: __dirname, //app absolute path
+  files: ['./api/routes/*.js'] //Path to the API handle folder
 };
 
 expressSwagger(options)
@@ -51,21 +51,20 @@ const PORT = process.env.PORT || 2308;
 
 // Connect to Database
 mongoose.connect('mongodb://Test123:Test123@ds145299.mlab.com:45299/dbtest123', { useNewUrlParser: true });
-mongoose.set('useCreateIndex', true);
-
-const db = mongoose.connection;
 
 // Use body parser to parse post requests
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 
+mongoose.set('useCreateIndex', true)
+const db = mongoose.connection;
 app.use(session({
-    secret: 'huynh duc khoan',
-    resave: true,
-    saveUninitialized: false,
-    store: new MongoStore({
-        mongooseConnection: db
-    })
+  secret: 'huynh duc khoan',
+  resave: true,
+  saveUninitialized: false,
+  store: new MongoStore({
+      mongooseConnection: db
+  })
 }));
 
 // Logger middleware
@@ -79,5 +78,5 @@ app.use('/user', userRoute);
 
 // Listen for HTTP Requests
 app.listen(PORT, () => {
-    console.log('Server running is port ' + PORT);
+  console.log('Server running is port ' + PORT);
 });

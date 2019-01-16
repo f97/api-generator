@@ -4,8 +4,8 @@ const packageTemplate = (appName) => {
   return (
 `{
   "name": "${appName}",
-  "version": "1.0.0",
-  "description": "${appName}",
+  "version": "${pjson.version}",
+  "description": "${appName} description",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
@@ -14,20 +14,42 @@ const packageTemplate = (appName) => {
   "author": "node-init",
   "license": "ISC",
   "dependencies": {
+    "bcryptjs": "*",
     "body-parser": "*",
+    "connect-mongo": "*",
     "dotenv": "*",
     "express": "*",
+    "express-session": "*",
+    "express-swagger-generator": "*",
     "mongoose": "*",
-    "morgan": "*",
-    "express-swagger-generator": "*"
+    "morgan": "*"
   }
 }`
   );
 }
 
-const serverjsTemplate = (mongoURL,models,port) => {
-  let rs = getRoutesDependencies(models);
+const serverjsTemplate = (mongoURL,models,port,authenticate) => {
+  let routesDependencies = getRoutesDependencies(models);
   let useRoutes = getUseRoutes(models);
+  let sessionUse = '';
+  if(authenticate){
+    routesDependencies +=`const userRoute = require('./api/routes/userRoute');
+const session = require('express-session');
+const MongoStore = require('connect-mongo')(session);
+`;
+useRoutes += `app.use('/user', userRoute);
+`;
+sessionUse += `mongoose.set('useCreateIndex', true)
+const db = mongoose.connection;
+app.use(session({
+  secret: 'huynh duc khoan',
+  resave: true,
+  saveUninitialized: false,
+  store: new MongoStore({
+      mongooseConnection: db
+  })
+}));`;
+  }
   return (
 `// Dependencies
 const express = require('express');
@@ -39,7 +61,7 @@ const bodyParser = require('body-parser');
 const dotenv = require('dotenv');
 const homeRoute = require('./api/routes/homeRoute');
 
-${rs}
+${routesDependencies}
 // Load dotenv variables
 dotenv.load();
 
@@ -81,6 +103,8 @@ mongoose.connect('${mongoURL}', { useNewUrlParser: true });
 // Use body parser to parse post requests
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
+
+${sessionUse}
 
 // Logger middleware
 app.use(logger('dev'));
@@ -348,11 +372,169 @@ module.exports = {
   );
 }
 
+userModelTemplate = () => {
+  return `var mongoose = require('mongoose');
+var bcrypt = require('bcryptjs');
+
+var UserSchema = new mongoose.Schema({
+  email: {
+    type: String,
+    unique: true,
+    required: true,
+    trim: true
+  },
+  username: {
+    type: String,
+    unique: true,
+    required: true,
+    trim: true
+  },
+  password: {
+    type: String,
+    required: true,
+  },
+  passwordConf: {
+    type: String,
+    required: true,
+  }
+});
+
+//authenticate input against database
+UserSchema.statics.authenticate = function (email, password, callback) {
+  User.findOne({ email: email })
+    .exec(function (err, user) {
+      if (err) {
+        return callback(err)
+      } else if (!user) {
+        var err = new Error('User not found.');
+        err.status = 401;
+        return callback(err);
+      }
+      bcrypt.compare(password, user.password, function (err, result) {
+        if (result === true) {
+          return callback(null, user);
+        } else {
+          return callback();
+        }
+      })
+    });
+}
+
+//hashing a password before saving it to the database
+UserSchema.pre('save', function (next) {
+  var user = this;
+  bcrypt.hash(user.password, 10, function (err, hash) {
+    if (err) {
+      return next(err);
+    }
+    user.password = hash;
+    next();
+  })
+});
+
+
+var User = mongoose.model('User', UserSchema);
+module.exports = User;`
+}
+
+userRouteTemplate = () => {
+  return `const express = require('express');
+const router = express.Router();
+const User = require('../models/userModel')
+
+//POST route for updating data
+router.post('/', function (req, res, next) {
+    // confirm that user typed same password twice
+    if (req.body.password !== req.body.passwordConf) {
+        var err = new Error('Passwords do not match.');
+        err.status = 400;
+        res.send("passwords dont match");
+        return next(err);
+    }
+
+    if (req.body.email &&
+        req.body.username &&
+        req.body.password &&
+        req.body.passwordConf) {
+
+        var userData = {
+            email: req.body.email,
+            username: req.body.username,
+            password: req.body.password,
+            passwordConf: req.body.passwordConf,
+        }
+
+        User.create(userData, function (error, user) {
+            if (error) {
+                return next(error);
+            } else {
+                req.session.userId = user._id;
+                return res.redirect('/user');
+            }
+        });
+
+    } else if (req.body.logemail && req.body.logpassword) {
+        User.authenticate(req.body.logemail, req.body.logpassword, function (error, user) {
+            if (error || !user) {
+                var err = new Error('Wrong email or password.');
+                err.status = 401;
+                return next(err);
+            } else {
+                req.session.userId = user._id;
+                return res.redirect('/user');
+            }
+        });
+    } else {
+        var err = new Error('All fields required.');
+        err.status = 400;
+        return next(err);
+    }
+})
+
+// GET route after registering
+router.get('/', function (req, res, next) {
+    User.findById(req.session.userId)
+        .exec(function (error, user) {
+            if (error) {
+                return next(error);
+            } else {
+                if (user === null) {
+                    // let err = new Error('Not authorized! Go back!');
+                    let err = 'Not authorized!';
+                    err.status = 400;
+                    return next(err);
+                } else {
+                    res.status(200).json({err: null, data: user});
+                }
+            }
+        });
+});
+
+
+// GET for logout logout
+router.get('/logout', function (req, res, next) {
+    if (req.session) {
+        // delete session object
+        req.session.destroy(function (err) {
+            if (err) {
+                return next(err);
+            } else {
+                return res.redirect('/');
+            }
+        });
+    }
+});
+
+module.exports = router;
+`
+}
+
+
 //Loop all routes dependencies
 //Lặp để lấy về tất cả routes dependencies
 const getRoutesDependencies = (models) => {
   let routes = '';
-  for(var i=3;i<models.length;i++)
+  for(var i=4;i<models.length;i++)
     routes += `const ${models[i]}Route = require('./api/routes/${models[i]}Route');
 `;
   return routes;
@@ -363,7 +545,7 @@ const getRoutesDependencies = (models) => {
 const getUseRoutes = models => {
   let use = '';
 
-  for(var i=3;i<models.length;i++)
+  for(var i=4;i<models.length;i++)
     use += `app.use('/${models[i]}', ${models[i]}Route);
 `;
   return use;
@@ -387,5 +569,7 @@ module.exports = {
   controllerTemplate,
   homeRouteTemplate,
   routesTemplate,
-  modelsTemplate
+  modelsTemplate,
+  userModelTemplate,
+  userRouteTemplate
 }
