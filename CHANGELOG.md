@@ -17,3 +17,8 @@
 ### Version 0.0.4
 
  - Add authentication with user  `{"email": "String", "username": "String", "password": "String", "passwordConf": "String"}`
+
+### Version 0.0.5
+ 
+ - rename package name.
+ - Upload to npmjs.

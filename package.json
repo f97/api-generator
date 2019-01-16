@@ -1,21 +1,28 @@
 {
-  "name": "rapi",
-  "version": "0.0.4",
+  "name": "grapi",
+  "version": "0.0.5",
   "description": "RESTful API generator using NodeJS, Express and Mongoose",
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "preferGlobal": true,
+  "bin": "./command.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/f97/rapi.git"
   },
-  "keywords": [],
+  "keywords": [
+    "rest", "rest-api", "create rest api", "node.js", "express.js"
+  ],
   "author": "Huynh Duc Khoan",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/f97/rapi/issues"
   },
-  "homepage": "https://github.com/f97/rapi#readme"
+  "homepage": "https://github.com/f97/rapi#readme",
+  "dependencies": {
+    "commander": "^2.19.0"
+  }
 }

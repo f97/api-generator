@@ -1,22 +1,21 @@
 # Api Generator
-RESTful API generator using NodeJS, Express and Mongoose.
+CLI Tool generator REST API  using NodeJS, Express and Mongoose.
 
 ## How to build project:
 
-### Clone the repo
+### Installation
 
 ```bash
-$ git clone https://github.com/f97/api-generator.git
-$ cd api-generator
+npm install -g grapi
 ```
 
-### Install nodejs
-```
-Follow instructions to install nodejs and npm.
-```
-### Edit `config.json` file
+This will install grapit globally on your system.
 
-Example `config.json`: 
+### Basic Usages
+
+#### Create `config.json` on project folder.
+
+Example `config.json`:
 
 ```json
 {
@@ -33,21 +32,29 @@ Example `config.json`:
 }
 ```
 
-### Run project
+#### Create a New Rest API
+
+On current folder, open terminal and run 
 
 ```bash
-npm start
+grapi new
 ```
 
-### Try api demo:
-
-```bash
-cd Demo #appName
-npm install
-npm start
+Basic Directory Structure
+```
+- api
+|-- controllers
+|-- models
+|-- routes
+- .gitignore
+- package.json
+- server.js
 ```
 
-Go to the browser with url: [localhost:2308](http://localhost:2308)
-Documents: [localhost:2308/api-docs](http://localhost:2308/api-docs)
+To Get help about this CLI
 
-Have fun
+```
+grapi --help
+```
+
+Happy Coding..!!

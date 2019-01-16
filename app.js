@@ -18,4 +18,6 @@ async function playCode() {
     process.exit(0);
 }
 
-playCode();
+module.exports = {
+    playCode
+}
