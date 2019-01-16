@@ -51,6 +51,18 @@ Basic Directory Structure
 - server.js
 ```
 
+Running API:
+
+```bash
+cd Demo #appName
+npm install
+npm start
+```
+
+Start your API at http://localhost:2308/ *(Your PORT config)*
+
+Documents API at http://localhost:2308/api-docs
+
 To Get help about this CLI
 
 ```
