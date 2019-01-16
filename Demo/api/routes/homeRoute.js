@@ -17,7 +17,7 @@ router.use(function(req, res, next) {
  */
 
 router.get('/', (req, res, next) => {
-  res.send('API running version 0.0.5');
+  res.send('API running version 0.0.6');
 });
 
 module.exports = router;
