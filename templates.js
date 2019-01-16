@@ -393,16 +393,16 @@ const usersSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  passwordConf: {
-    type: String,
-    required: true,
+  createdAt: {
+    type: Date,
+    default: Date.now
   }
 });
 
 //authenticate input against database
-usersSchema.statics.authenticate = function (email, password, callback) {
-  User.findOne({ email: email })
-    .exec(function (err, user) {
+usersSchema.statics.authenticate = (email, password, callback) => {
+  Users.findOne({ email: email })
+    .exec((err, user) => {
       if (err) {
         return callback(err)
       } else if (!user) {
@@ -410,11 +410,11 @@ usersSchema.statics.authenticate = function (email, password, callback) {
         err.status = 401;
         return callback(err);
       }
-      bcrypt.compare(password, user.password, function (err, result) {
+      bcrypt.compare(password, user.password, (err, result) => {
         if (result === true) {
           return callback(null, user);
         } else {
-          return callback();
+          return callback(err);
         }
       })
     });
@@ -423,7 +423,7 @@ usersSchema.statics.authenticate = function (email, password, callback) {
 //hashing a password before saving it to the database
 usersSchema.pre('save', function (next) {
   var user = this;
-  bcrypt.hash(user.password, 10, function (err, hash) {
+  bcrypt.hash(user.password, 10, (err, hash) => {
     if (err) {
       return next(err);
     }
@@ -432,8 +432,10 @@ usersSchema.pre('save', function (next) {
   })
 });
 
+
+const Users = mongoose.model('Users', usersSchema);
 module.exports = {
-  Users : mongoose.model('Users', usersSchema)
+  Users
 }`
 }
 
@@ -442,7 +444,7 @@ userRouteTemplate = () => {
 const router = express.Router();
 const { Users } = require('../models/usersModel')
 
-router.use(function (req, res, next) {
+router.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers",
         "Origin, X-Requested-With, Content-Type, Accept, X-Access-Token, X-Key");
@@ -454,65 +456,73 @@ router.use(function (req, res, next) {
  * @property {string} email.required
  * @property {string} username.required
  * @property {string} password.required
- * @property {string} passwordConf.required
  */
 
 /**
- * @route POST /users
+ * @route POST /users/signin
  * @group Users
  * @param {Users.model} users.body.required
  * @returns {} Signin
  */
 
 //POST route for updating data
-router.post('/', function (req, res, next) {
-    // confirm that user typed same password twice
-    if (req.body.password !== req.body.passwordConf) {
-        var err = 'Passwords do not match.';
-        res.status(400).json({ err: err, data: null });
-    }
-
+router.post('/signin', (req, res, next) => {
+    
     if (req.body.email &&
         req.body.username &&
-        req.body.password &&
-        req.body.passwordConf) {
+        req.body.password) {
 
-        var userData = {
+        let userData = {
             email: req.body.email,
             username: req.body.username,
-            password: req.body.password,
-            passwordConf: req.body.passwordConf,
+            password: req.body.password
         }
 
-        Users.create(userData, function (error, user) {
+        Users.create(userData, (error, user) => {
+            console.log(error);
             if (error) {
                 res.status(400).json({ err: error, data: null });
-            } else {
-                req.session.userId = user._id;
-                return res.redirect('/user');
-            }
-        });
-
-    } else if (req.body.logemail && req.body.logpassword) {
-        Users.authenticate(req.body.logemail, req.body.logpassword, function (error, user) {
-            if (error || !user) {
-                var err = new Error('Wrong email or password.');
-                res.status(401).json({ err: err, data: null });
             } else {
                 req.session.userId = user._id;
                 return res.redirect('/users');
             }
         });
     } else {
-        var err = new Error('All fields required.');
+        let err = new Error('All fields required.');
         res.status(400).json({ err: err, data: null });
     }
 })
 
+/**
+ * @route POST /users/login
+ * @group Users
+ * @param {string} email.query.required -  email
+ * @param {string} password.query.required - user's password.
+ * @returns {} Logs user into the system
+ */
+
+router.post('/login', (req, res, next) => {
+    Users.authenticate(req.body.email, req.body.password, (error, user) => {
+        if (error || !user) {
+            let err = new Error('Wrong email or password.');
+            res.status(401).json({ err: err, data: null });
+        } else {
+            req.session.userId = user._id;
+            return res.redirect('/users');
+        }
+    });
+})
+
+/**
+ * @route GET /users
+ * @group Users
+ * @returns {Users.model} get current user
+ */
+
 // GET route after registering
-router.get('/', function (req, res, next) {
+router.get('/', (req, res, next) => {
     Users.findById(req.session.userId)
-        .exec(function (error, user) {
+        .exec((error, user) => {
             if (error) {
                 res.status(500).json({ err: error, data: null });
             } else {
@@ -526,12 +536,17 @@ router.get('/', function (req, res, next) {
         });
 });
 
+/**
+ * @route GET /users/logout
+ * @group Users
+ * @returns Logs out current logged in user session
+ */
 
 // GET for logout logout
-router.get('/logout', function (req, res, next) {
+router.get('/logout', (req, res, next) => {
     if (req.session) {
         // delete session object
-        req.session.destroy(function (err) {
+        req.session.destroy((err) => {
             if (err) {
                 res.status(500).json({ err: err, data: null });
             } else {
