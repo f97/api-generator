@@ -440,16 +440,36 @@ module.exports = {
 userRouteTemplate = () => {
   return `const express = require('express');
 const router = express.Router();
-const User = require('../models/usersModel')
+const { Users } = require('../models/usersModel')
+
+router.use(function (req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers",
+        "Origin, X-Requested-With, Content-Type, Accept, X-Access-Token, X-Key");
+    next();
+});
+
+/**
+ * @typedef Users
+ * @property {string} email.required
+ * @property {string} username.required
+ * @property {string} password.required
+ * @property {string} passwordConf.required
+ */
+
+/**
+ * @route POST /users
+ * @group Users
+ * @param {Users.model} users.body.required
+ * @returns {} Signin
+ */
 
 //POST route for updating data
 router.post('/', function (req, res, next) {
     // confirm that user typed same password twice
     if (req.body.password !== req.body.passwordConf) {
-        var err = new Error('Passwords do not match.');
-        err.status = 400;
-        res.send("passwords dont match");
-        return next(err);
+        var err = 'Passwords do not match.';
+        res.status(400).json({ err: err, data: null });
     }
 
     if (req.body.email &&
@@ -464,9 +484,9 @@ router.post('/', function (req, res, next) {
             passwordConf: req.body.passwordConf,
         }
 
-        User.create(userData, function (error, user) {
+        Users.create(userData, function (error, user) {
             if (error) {
-                return next(error);
+                res.status(400).json({ err: error, data: null });
             } else {
                 req.session.userId = user._id;
                 return res.redirect('/user');
@@ -474,37 +494,33 @@ router.post('/', function (req, res, next) {
         });
 
     } else if (req.body.logemail && req.body.logpassword) {
-        User.authenticate(req.body.logemail, req.body.logpassword, function (error, user) {
+        Users.authenticate(req.body.logemail, req.body.logpassword, function (error, user) {
             if (error || !user) {
                 var err = new Error('Wrong email or password.');
-                err.status = 401;
-                return next(err);
+                res.status(401).json({ err: err, data: null });
             } else {
                 req.session.userId = user._id;
-                return res.redirect('/user');
+                return res.redirect('/users');
             }
         });
     } else {
         var err = new Error('All fields required.');
-        err.status = 400;
-        return next(err);
+        res.status(400).json({ err: err, data: null });
     }
 })
 
 // GET route after registering
 router.get('/', function (req, res, next) {
-    User.findById(req.session.userId)
+    Users.findById(req.session.userId)
         .exec(function (error, user) {
             if (error) {
-                return next(error);
+                res.status(500).json({ err: error, data: null });
             } else {
                 if (user === null) {
-                    // let err = new Error('Not authorized! Go back!');
                     let err = 'Not authorized!';
-                    err.status = 400;
-                    return next(err);
+                    res.status(400).json({ err: err, data: null });
                 } else {
-                    res.status(200).json({err: null, data: user});
+                    res.status(200).json({ err: null, data: user });
                 }
             }
         });
@@ -517,7 +533,7 @@ router.get('/logout', function (req, res, next) {
         // delete session object
         req.session.destroy(function (err) {
             if (err) {
-                return next(err);
+                res.status(500).json({ err: err, data: null });
             } else {
                 return res.redirect('/');
             }
