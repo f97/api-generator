@@ -10,7 +10,7 @@ const homeRoute = require('./api/routes/homeRoute');
 
 const postsRoute = require('./api/routes/postsRoute');
 const commentsRoute = require('./api/routes/commentsRoute');
-const userRoute = require('./api/routes/userRoute');
+const usersRoute = require('./api/routes/usersRoute');
 const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
 
@@ -23,7 +23,7 @@ let options = {
       info: {
           description: 'Documents api',
           title: 'Documents',
-          version: '0.0.2',
+          version: '0.0.5',
       },
       host: 'localhost:2308',
       basePath: '',
@@ -74,7 +74,7 @@ app.use(logger('dev'));
 app.use('/', homeRoute);
 app.use('/posts', postsRoute);
 app.use('/comments', commentsRoute);
-app.use('/user', userRoute);
+app.use('/users', usersRoute);
 
 // Listen for HTTP Requests
 app.listen(PORT, () => {

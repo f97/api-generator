@@ -1,6 +1,6 @@
 {
   "name": "Demo",
-  "version": "0.0.2",
+  "version": "0.0.5",
   "description": "Demo description",
   "main": "server.js",
   "scripts": {

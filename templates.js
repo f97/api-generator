@@ -33,11 +33,11 @@ const serverjsTemplate = (mongoURL,models,port,authenticate) => {
   let useRoutes = getUseRoutes(models);
   let sessionUse = '';
   if(authenticate){
-    routesDependencies +=`const userRoute = require('./api/routes/userRoute');
+    routesDependencies +=`const usersRoute = require('./api/routes/usersRoute');
 const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
 `;
-useRoutes += `app.use('/user', userRoute);
+useRoutes += `app.use('/users', usersRoute);
 `;
 sessionUse += `mongoose.set('useCreateIndex', true)
 const db = mongoose.connection;
@@ -373,10 +373,10 @@ module.exports = {
 }
 
 userModelTemplate = () => {
-  return `var mongoose = require('mongoose');
-var bcrypt = require('bcryptjs');
+  return `const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs');
 
-var UserSchema = new mongoose.Schema({
+const usersSchema = new mongoose.Schema({
   email: {
     type: String,
     unique: true,
@@ -400,7 +400,7 @@ var UserSchema = new mongoose.Schema({
 });
 
 //authenticate input against database
-UserSchema.statics.authenticate = function (email, password, callback) {
+usersSchema.statics.authenticate = function (email, password, callback) {
   User.findOne({ email: email })
     .exec(function (err, user) {
       if (err) {
@@ -421,7 +421,7 @@ UserSchema.statics.authenticate = function (email, password, callback) {
 }
 
 //hashing a password before saving it to the database
-UserSchema.pre('save', function (next) {
+usersSchema.pre('save', function (next) {
   var user = this;
   bcrypt.hash(user.password, 10, function (err, hash) {
     if (err) {
@@ -432,15 +432,15 @@ UserSchema.pre('save', function (next) {
   })
 });
 
-
-var User = mongoose.model('User', UserSchema);
-module.exports = User;`
+module.exports = {
+  Users : mongoose.model('Users', usersSchema)
+}`
 }
 
 userRouteTemplate = () => {
   return `const express = require('express');
 const router = express.Router();
-const User = require('../models/userModel')
+const User = require('../models/usersModel')
 
 //POST route for updating data
 router.post('/', function (req, res, next) {
@@ -525,8 +525,7 @@ router.get('/logout', function (req, res, next) {
     }
 });
 
-module.exports = router;
-`
+module.exports = router;`
 }
 
 

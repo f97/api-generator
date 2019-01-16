@@ -91,10 +91,10 @@ const createModel = (appName, models, config) => {
 
 const createAuthentication = (appName) => {
   try{
-    fs.writeFileSync(`${DIR_NAME}${appName}/api/routes/userRoute.js`,
+    fs.writeFileSync(`${DIR_NAME}${appName}/api/routes/usersRoute.js`,
         template.userRouteTemplate());
     console.log(`Writing homeRoute.js`);
-    fs.writeFileSync(`${DIR_NAME}${appName}/api/models/userModel.js`,
+    fs.writeFileSync(`${DIR_NAME}${appName}/api/models/usersModel.js`,
       template.userModelTemplate());
     console.log(`Writing homeRoute.js`);
   }catch(err){
