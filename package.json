@@ -1,6 +1,6 @@
 {
-  "name": "api-generator",
-  "version": "0.0.2",
+  "name": "rapi",
+  "version": "0.0.4",
   "description": "RESTful API generator using NodeJS, Express and Mongoose",
   "main": "app.js",
   "scripts": {
@@ -9,13 +9,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/f97/api-generator.git"
+    "url": "git+https://github.com/f97/rapi.git"
   },
   "keywords": [],
-  "author": "",
+  "author": "Huynh Duc Khoan",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/f97/api-generator/issues"
+    "url": "https://github.com/f97/rapi/issues"
   },
-  "homepage": "https://github.com/f97/api-generator#readme"
+  "homepage": "https://github.com/f97/rapi#readme"
 }
