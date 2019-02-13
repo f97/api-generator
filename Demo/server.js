@@ -72,9 +72,9 @@ app.use(logger('dev'));
 
 // Use Routes
 app.use('/', homeRoute);
-app.use('/posts', postsRoute);
-app.use('/comments', commentsRoute);
-app.use('/users', usersRoute);
+app.use('/v1/posts', postsRoute);
+app.use('/v1/comments', commentsRoute);
+app.use('/v1/users', usersRoute);
 
 // Listen for HTTP Requests
 app.listen(PORT, () => {

@@ -28,3 +28,8 @@
  - Update API default.
  - Add document for authentication.
  - Update users model.
+
+### Version 0.0.7
+
+ - Add rest api versioning.
+ - Fix if folder exists and config.json not exists.

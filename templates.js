@@ -37,7 +37,7 @@ const serverjsTemplate = (mongoURL,models,port,authenticate) => {
 const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
 `;
-useRoutes += `app.use('/users', usersRoute);
+useRoutes += `app.use('/v1/users', usersRoute);
 `;
 sessionUse += `mongoose.set('useCreateIndex', true)
 const db = mongoose.connection;
@@ -73,7 +73,7 @@ let options = {
           title: 'Documents',
           version: '${pjson.version}',
       },
-      host: 'localhost:${port}',
+      host: 'localhost:${port}/v1',
       basePath: '',
       produces: [
           "application/json",
@@ -576,7 +576,7 @@ const getUseRoutes = models => {
   let use = '';
 
   for(var i=4;i<models.length;i++)
-    use += `app.use('/${models[i]}', ${models[i]}Route);
+    use += `app.use('/v1/${models[i]}', ${models[i]}Route);
 `;
   return use;
 }

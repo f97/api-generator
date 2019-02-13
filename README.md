@@ -32,6 +32,8 @@ Example `config.json`:
 }
 ```
 
+*appName, mongoURL, port and authenticate* is default and you can add or replace model... :)))
+
 #### Create a New Rest API
 
 On current folder, open terminal and run 
