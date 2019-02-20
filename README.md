@@ -19,16 +19,19 @@ Example `config.json`:
 
 ```json
 {
-    "appName":"Demo",
+    "appName": "Demo",
     "mongoURL": "mongodb://Test123:Test123@ds145299.mlab.com:45299/dbtest123",
     "port": 2308,
     "authenticate": true,
-    "posts": [
-        {"id": "Number", "title": "String", "author": "String"}
-    ],
-    "comments": [ 
-        {"body": "String", "postId": "Number"}
-    ]
+    "posts": {
+        "id": "Number",
+        "title": "String",
+        "author": "String"
+    },
+    "comments": {
+        "body": "String",
+        "postId": "Number"
+    }
 }
 ```
 
