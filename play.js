@@ -1,103 +1,103 @@
 const fs = require('fs');
 const template = require('./templates');
-const DIR_NAME = process.cwd() + '/';
+// const DIR_NAME = process.cwd() + '/';
 
-const createAppFolder = (appName) => {
+const createAppFolder = (destinationFolder, appName) => {
   try {
-    fs.mkdirSync(DIR_NAME + appName);
+    fs.mkdirSync(destinationFolder + appName);
     console.log("Create Folder: " + appName);
   } catch (err) {
     throw new Error(err);
   }
 }
 
-const createPackageJson = (appName) => {
-  try{
-    fs.writeFileSync(DIR_NAME+appName+'/package.json', 
+const createPackageJson = (destinationFolder, appName) => {
+  try {
+    fs.writeFileSync(destinationFolder + appName + '/package.json',
       template.packageTemplate(appName));
     console.log('Writing package.json');
-  }catch(err){
+  } catch (err) {
     throw new Error(err);
   }
 }
 
-const createServerjs = (appName, mongoURL, models, port,authenticate) => {
-  try{
-    fs.writeFileSync(DIR_NAME+appName+'/server.js', 
-      template.serverjsTemplate(mongoURL, models, port,authenticate));
+const createServerjs = (destinationFolder, appName, mongoURL, models, port, authenticate) => {
+  try {
+    fs.writeFileSync(destinationFolder + appName + '/server.js',
+      template.serverjsTemplate(mongoURL, models, port, authenticate));
     console.log('Writing server.js');
-  }catch(err){
+  } catch (err) {
     throw new Error(err);
   }
 }
 
-const createApiFolder= (appName) => {
-  try{
-    fs.mkdirSync(DIR_NAME+appName+'/api');
+const createApiFolder = (destinationFolder, appName) => {
+  try {
+    fs.mkdirSync(destinationFolder + appName + '/api');
     console.log("Create Folder: api");
-    fs.mkdirSync(DIR_NAME+appName+'/api/routes');
+    fs.mkdirSync(destinationFolder + appName + '/api/routes');
     console.log("Create Folder: routes");
-    fs.mkdirSync(DIR_NAME+appName+'/api/controllers');
+    fs.mkdirSync(destinationFolder + appName + '/api/controllers');
     console.log("Create Folder: controllers");
-    fs.mkdirSync(DIR_NAME+appName+'/api/models');
+    fs.mkdirSync(destinationFolder + appName + '/api/models');
     console.log("Create Folder: models");
-  }catch(err){
+  } catch (err) {
     throw new Error(err);
   }
 }
 
-const createControllers = (appName, models) => {
-  try{
-    for(var i=4; i<models.length;i++){
-      fs.writeFileSync(`${DIR_NAME+appName+'/'}api/controllers/${models[i]}Controller.js`,
+const createControllers = (destinationFolder, appName, models) => {
+  try {
+    for (var i = 4; i < models.length; i++) {
+      fs.writeFileSync(`${destinationFolder + appName + '/'}api/controllers/${models[i]}Controller.js`,
         template.controllerTemplate(models[i]));
       console.log(`Writing ${models[i]}Controller.js`);
     }
-  }catch(err){
+  } catch (err) {
     throw new Error(err);
   }
 }
 
-const createRoutes = (appName, models,config) => {
-  try{
-    fs.writeFileSync(`${DIR_NAME}${appName}/api/routes/homeRoute.js`,
-        template.homeRouteTemplate());
+const createRoutes = (destinationFolder, appName, models, config) => {
+  try {
+    fs.writeFileSync(`${destinationFolder}${appName}/api/routes/homeRoute.js`,
+      template.homeRouteTemplate());
     console.log(`Writing homeRoute.js`);
-    for(var i=4; i<models.length; i++){
-      attributes = Object.keys(config[models[i]][0]);
-      types = Object.values(config[models[i]][0]);
-      fs.writeFileSync(`${DIR_NAME+appName+'/'}api/routes/${models[i]}Route.js`,
+    for (var i = 4; i < models.length; i++) {
+      attributes = Object.keys(config[models[i]]);
+      types = Object.values(config[models[i]]);
+      fs.writeFileSync(`${destinationFolder + appName + '/'}api/routes/${models[i]}Route.js`,
         template.routesTemplate(models[i], attributes, types));
       console.log(`Writing ${models[i]}Route.js`);
     }
-  }catch(err){
+  } catch (err) {
     throw new Error(err);
   }
 }
 
-const createModel = (appName, models, config) => {
-  try{
-    for(var i=4; i<models.length; i++){
-      attributes = Object.keys(config[models[i]][0]);
-      types = Object.values(config[models[i]][0]);
-      fs.writeFileSync(`${DIR_NAME+appName+'/'}api/models/${models[i]}Model.js`,
+const createModel = (destinationFolder, appName, models, config) => {
+  try {
+    for (var i = 4; i < models.length; i++) {
+      attributes = Object.keys(config[models[i]]);
+      types = Object.values(config[models[i]]);
+      fs.writeFileSync(`${destinationFolder + appName + '/'}api/models/${models[i]}Model.js`,
         template.modelsTemplate(models[i], attributes, types));
       console.log(`Writing ${models[i]}Model.js`);
     }
-  }catch(err){
+  } catch (err) {
     throw new Error(err);
   }
 }
 
-const createAuthentication = (appName) => {
-  try{
-    fs.writeFileSync(`${DIR_NAME}${appName}/api/routes/usersRoute.js`,
-        template.userRouteTemplate());
+const createAuthentication = (destinationFolder, appName) => {
+  try {
+    fs.writeFileSync(`${destinationFolder}${appName}/api/routes/usersRoute.js`,
+      template.userRouteTemplate());
     console.log(`Writing homeRoute.js`);
-    fs.writeFileSync(`${DIR_NAME}${appName}/api/models/usersModel.js`,
+    fs.writeFileSync(`${destinationFolder}${appName}/api/models/usersModel.js`,
       template.userModelTemplate());
     console.log(`Writing homeRoute.js`);
-  }catch(err){
+  } catch (err) {
     throw new Error(err);
   }
 }

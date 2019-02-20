@@ -33,3 +33,8 @@
 
  - Add rest api versioning.
  - Fix if folder exists and config.json not exists.
+
+### Version 0.0.8
+
+ - Update config data resource.
+ - Support grapi-front

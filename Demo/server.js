@@ -23,9 +23,9 @@ let options = {
       info: {
           description: 'Documents api',
           title: 'Documents',
-          version: '0.0.6',
+          version: '0.0.7',
       },
-      host: 'localhost:2308',
+      host: 'localhost:2308/v1',
       basePath: '',
       produces: [
           "application/json",
