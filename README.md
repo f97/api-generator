@@ -49,6 +49,7 @@ Basic Directory Structure
 ```
 - api
 |-- controllers
+|-- node_modules
 |-- models
 |-- routes
 - .gitignore
@@ -60,7 +61,6 @@ Running API:
 
 ```bash
 cd Demo #appName
-npm install
 npm start
 ```
 

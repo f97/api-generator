@@ -38,3 +38,7 @@
 
  - Update config data resource.
  - Support grapi-front
+
+### Version 0.0.9
+
+ - Auto install dependencies.

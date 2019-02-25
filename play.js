@@ -1,6 +1,6 @@
 const fs = require('fs');
 const template = require('./templates');
-// const DIR_NAME = process.cwd() + '/';
+const util = require('./util');
 
 const createAppFolder = (destinationFolder, appName) => {
   try {
@@ -102,6 +102,12 @@ const createAuthentication = (destinationFolder, appName) => {
   }
 }
 
+const installDependencies = (destinationFolder, appName, callback) => {
+  let command = 'npm install'
+  console.log('INSTALLING DEPENDENCIES...\n');
+  util.execCmd(command, destinationFolder + appName, callback);
+}
+
 module.exports = {
   createAppFolder,
   createPackageJson,
@@ -110,5 +116,6 @@ module.exports = {
   createControllers,
   createRoutes,
   createModel,
-  createAuthentication
+  createAuthentication,
+  installDependencies
 }

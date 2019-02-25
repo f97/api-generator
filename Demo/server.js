@@ -23,7 +23,7 @@ let options = {
       info: {
           description: 'Documents api',
           title: 'Documents',
-          version: '0.0.7',
+          version: '0.0.8',
       },
       host: 'localhost:2308/v1',
       basePath: '',
