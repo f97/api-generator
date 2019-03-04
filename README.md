@@ -64,7 +64,7 @@ cd Demo #appName
 npm start
 ```
 
-Start your API at http://localhost:2308/ *(Your PORT config)*
+Start your API at http://localhost:2308/ *(Your PORT config)* and simple CRUD with url is http://localhost:2308/v1 (v1 is versioning, can config after running app.)
 
 Documents API at http://localhost:2308/api-docs
 
