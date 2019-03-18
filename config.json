@@ -1,8 +1,8 @@
 {
-    "appName": "Demo",
+    "appName": "Demo2",
     "mongoURL": "mongodb://Test123:Test123@ds145299.mlab.com:45299/dbtest123",
     "port": 2308,
-    "authenticate": true,
+    "authenticate": false,
     "posts": {
         "id": "Number",
         "title": "String",

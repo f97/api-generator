@@ -5,7 +5,6 @@ const expressSwagger = require('express-swagger-generator')(app);
 const mongoose = require('mongoose');
 const logger = require('morgan');
 const bodyParser = require('body-parser');
-const dotenv = require('dotenv');
 const homeRoute = require('./api/routes/homeRoute');
 
 const postsRoute = require('./api/routes/postsRoute');
@@ -14,8 +13,6 @@ const usersRoute = require('./api/routes/usersRoute');
 const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
 
-// Load dotenv variables
-dotenv.load();
 
 //express swagger documents
 let options = {
@@ -23,7 +20,7 @@ let options = {
       info: {
           description: 'Documents api',
           title: 'Documents',
-          version: '0.0.8',
+          version: '0.0.9',
       },
       host: 'localhost:2308/v1',
       basePath: '',

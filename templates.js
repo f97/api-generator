@@ -17,7 +17,6 @@ const packageTemplate = (appName) => {
     "bcryptjs": "*",
     "body-parser": "*",
     "connect-mongo": "*",
-    "dotenv": "*",
     "express": "*",
     "express-session": "*",
     "express-swagger-generator": "*",
@@ -58,12 +57,9 @@ const expressSwagger = require('express-swagger-generator')(app);
 const mongoose = require('mongoose');
 const logger = require('morgan');
 const bodyParser = require('body-parser');
-const dotenv = require('dotenv');
 const homeRoute = require('./api/routes/homeRoute');
 
 ${routesDependencies}
-// Load dotenv variables
-dotenv.load();
 
 //express swagger documents
 let options = {

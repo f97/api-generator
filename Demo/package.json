@@ -1,6 +1,6 @@
 {
   "name": "Demo",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "Demo description",
   "main": "server.js",
   "scripts": {
@@ -13,7 +13,6 @@
     "bcryptjs": "*",
     "body-parser": "*",
     "connect-mongo": "*",
-    "dotenv": "*",
     "express": "*",
     "express-session": "*",
     "express-swagger-generator": "*",

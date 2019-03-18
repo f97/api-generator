@@ -42,3 +42,7 @@
 ### Version 0.0.9
 
  - Auto install dependencies.
+
+### Version 0.1.0
+
+ - Remove dotenv dependency.

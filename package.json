@@ -14,7 +14,11 @@
     "url": "git+https://github.com/f97/rapi.git"
   },
   "keywords": [
-    "rest", "rest-api", "create rest api", "node.js", "express.js"
+    "rest",
+    "rest-api",
+    "create rest api",
+    "node.js",
+    "express.js"
   ],
   "author": "Huynh Duc Khoan",
   "license": "ISC",
