@@ -1,6 +1,6 @@
 {
   "name": "grapi",
-  "version": "0.0.9",
+  "version": "0.1.0",
   "description": "RESTful API generator using NodeJS, Express and Mongoose",
   "main": "app.js",
   "scripts": {
