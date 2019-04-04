@@ -1,4 +1,6 @@
 # Api Generator
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Ff97%2Fgrapi.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Ff97%2Fgrapi?ref=badge_shield)
+
 CLI Tool generator REST API  using NodeJS, Express and Mongoose.
 
 ## How to build project:
@@ -75,3 +77,6 @@ grapi --help
 ```
 
 Happy Coding..!!
+
+## License
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Ff97%2Fgrapi.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Ff97%2Fgrapi?ref=badge_large)
